@@ -2,10 +2,10 @@
 
 class Database
 {
-    private $db_host = "https://databases.000webhost.com/";
-    private $db_user = "test1";
-    private $db_pass = "S0J5*cdG\UtR[l^$";
-    private $db_name = "id19611898_categorie";
+    private $db_host = "sql206.epizy.com";
+    private $db_user = "epiz_30607380";
+    private $db_pass = "q6EC0DWsZWcbFs";
+    private $db_name = "epiz_30607380_categorie";
     private $result = [];
     private $conn = false;
     private $mysqli = "";
