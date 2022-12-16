@@ -12,12 +12,11 @@ if (isset($_POST['parent_id'])) {
 }
 $liste =  $obj->select('categories', '*', null, "parent_id='$id'", null, null);
 $fiche =  $obj->select('fiches', '*', null, "categorie_id='$id'", null, null);
-// var_dump($fiche);
+ 
 
 if (isset($_POST['libelle'])) {
     $category = new Category();
-    // var_dump($_POST);
-    // die();
+ 
     $category->addcategory($_POST['libelle']);
     if ($category) {
         header('Location:' . $_SERVER['HTTP_REFERER']);
@@ -25,8 +24,7 @@ if (isset($_POST['libelle'])) {
 }
 
 if (isset($_POST['libelles'])) {
-    //    var_dump($_POST) ;
-    //     die();
+ 
     $id = $_POST['id'];
     $parent_id  = $_POST['parent_id'];
     $libelle = $_POST['libelles'];
