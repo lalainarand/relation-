@@ -20,7 +20,7 @@ if (isset($_POST['libelle'])) {
     // die();
     $category->addcategory($_POST['libelle']);
     if ($category) {
-        header("Location: liste.php?parent_id=$id");
+        header('Location:' . $_SERVER['HTTP_REFERER']);
     }
 }
 

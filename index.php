@@ -19,8 +19,7 @@
 
     if (isset($_POST['libelle'])) {
     $category = new Category();
-    //    var_dump($_POST) ;
-    //    die();
+ 
     $category->addcategory($_POST['libelle']);
         if ($category) {
             header('Location: index.php');
@@ -46,7 +45,7 @@
 
     if (isset($_GET['delete'])) {
         $id = $_GET['delete'];
-        $id_categ = $obj->select('categories', 'id', null, "id = '$id' and parent_id=0", null, null);
+        $id_categ = $obj->select('categories', 'id', null, "id = $id", null, null);
         foreach($id_categ as $d){
             $ids= $d['id']; 
         }
@@ -55,9 +54,11 @@
             foreach($idd_categ as $c){
                 $iiii = $c['id'];
                 $obj->delete('categories', "id = '$iiii'");
+                $obj->delete('fiches', "categorie_id = '$iiii'");
             }
         }
         $obj->delete('categories', "id = '$ids'");
+        $obj->delete('fiches', "categorie_id = '$ids'");
         header('Location: index.php');
     }
 ?>
