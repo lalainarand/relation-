@@ -46,7 +46,7 @@
 
     <div class="container">
         <div class="row mt-5">
-            <h4>Liste des fiche dans <?= $nom ?> </h4>
+            <h4>Liste des fiche  </h4>
             <table class="table table-hover">
                 <thead>
                     <tr>
