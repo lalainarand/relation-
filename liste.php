@@ -86,6 +86,7 @@ if (isset($_POST['Description'])) {
 
     <div class="container">
         <div class="row mt-5">
+            <a href="javascript:history.go(-1)" class="btn btn-dark">Retour</a>'
             <?php if ($liste) : ?>
                 <table class="table table-hover">
                     <thead>
