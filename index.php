@@ -19,8 +19,7 @@
 
     if (isset($_POST['libelle'])) {
     $category = new Category();
-    //    var_dump($_POST) ;
-    //    die();
+ 
     $category->addcategory($_POST['libelle']);
         if ($category) {
             header('Location: index.php');
