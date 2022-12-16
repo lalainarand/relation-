@@ -2,10 +2,10 @@
 
 class Database
 {
-    private $db_host = "localhost";
-    private $db_user = "root";
-    private $db_pass = "";
-    private $db_name = "categorie";
+    private $db_host = "https://databases.000webhost.com/";
+    private $db_user = "test1";
+    private $db_pass = "S0J5*cdG\UtR[l^$";
+    private $db_name = "id19611898_categorie";
     private $result = [];
     private $conn = false;
     private $mysqli = "";
