@@ -1,13 +1,18 @@
 <?php
 include('db.php');
 include('categorie.php');
+include('ajout_fiche.php');
 $obj = new Database();                
 if (isset($_POST['parent_id'])) {
     $id = $_POST['parent_id'];
+}elseif(isset($_POST['Description'])){
+    $id = $_POST['categorie_id'];
 } else {
     $id = $_GET['parent_id'];
 }
 $liste =  $obj->select('categories', '*', null, "parent_id='$id'", null, null);
+$fiche =  $obj->select('fiches', '*', null, "categorie_id='$id'", null, null);
+// var_dump($fiche);
 
 if (isset($_POST['libelle'])) {
     $category = new Category();
@@ -17,6 +22,13 @@ if (isset($_POST['libelle'])) {
     if ($category) {
         header("Location: liste.php?parent_id=$id");
     }
+}
+if (isset($_POST['Description'])) {
+    $fiche = new fiches();
+    $fiche ->addfiche($_POST['Description']);
+   if ($fiche) {
+        header("location:".$_SERVER['HTTP_REFERER']);
+   }
 }
 ?>
 <!DOCTYPE html>
@@ -41,7 +53,7 @@ if (isset($_POST['libelle'])) {
                         <tr>
                             <th>Libelle</th>
                             <th>Sous categorie</th>
-                            <th>Fiche</th>
+                            <th>fiche</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -51,13 +63,13 @@ if (isset($_POST['libelle'])) {
                             <tr>
                                 <td><?= $f['libelle'] ?></td>
                                 <td><?= $f['parent_id'] ?></td>
-                                <td><a href="" class="btn btn-dark">Voir</a></td>
-                                <td><a href="" class="btn btn-dark">Voir</a></td>
+                                <td><a href="fiche.php?id=<?= $f['id'] ?>" class="btn btn-dark">Voir</a></td>
                                 <td>
                                     <!-- <a href="" class="btn btn-warning">Editer</a>
                                 <a href="" class="btn btn-danger">Supprimer</a>
                                 <a href="" class="btn btn-info">Ajout fiche</a> -->
                                     <a href="" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#teste" onclick="getId(<?=$f['id'] ?>)">ajout s.categorie</a>
+                                    <a href="" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#fichier" onclick="getIdFiche(<?=$f['id'] ?>)">ajout fiche</a>
                                 </td>
                             </tr>
                         <?php endforeach ?>
@@ -92,11 +104,47 @@ if (isset($_POST['libelle'])) {
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="fichier" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitleId">Ajout fiches</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="liste.php" method="post">
+                            <div class="mb-3">
+                                <label for="libelle" class="form-label">Libelle :</label>
+                                <input type="text" name="labelle" id="labelle" class="form-control" placeholder="" aria-describedby="helpId">
+                                <input type="hidden" name="categorie_id" id="categorie_id" class="form-control" placeholder="" aria-describedby="helpId">
+                            </div>
+                            <div class="mb-3">
+                                <label for="Description" class="form-label">Description :</label>
+                                <input type="text" name="Description" id="Description" class="form-control" placeholder="" aria-describedby="helpId">
+                            </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.2/jquery.min.js" integrity="sha512-tWHlutFnuG0C6nQRlpvrEhE4QpkG1nn2MOUMWmUeRePl4e3Aki0VB6W1v3oLjFtd0hVOtRQ9PHpSfN6u6/QXkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js" integrity="sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        $(document).ready(function(){
+            // const myModal = new bootstrap.Modal(document.getElementById('fichier'), options)
+            $('#fichier').modal('hide');
+        });
         function getId(parent_id) {
             document.getElementById('parent_ids').value = parent_id;
+        }
+        function getIdFiche(parent_id) {
+            document.getElementById('categorie_id').value = parent_id;
         }
     </script>
 </body>
