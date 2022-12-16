@@ -27,7 +27,7 @@
     if(isset($_GET['delete'])){
         $id = $_GET['delete'];
         $obj->delete('fiches',"id = '$id'");
-        header("Location: index.php");
+        header("location:".$_SERVER['HTTP_REFERER']);
     }
      $fiche =  $obj->select('fiches','*',null,"categorie_id='$id'",null,null);
 

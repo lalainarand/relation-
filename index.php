@@ -1,56 +1,65 @@
 <?php
-include('db.php');
-include('categorie.php');
-include('ajout_fiche.php');
+    include('db.php');
+    include('categorie.php');
+    include('ajout_fiche.php');
 
-$obj = new Database();
+    $obj = new Database();
 
-//ajout fiches
+    //ajout fiches
 
-if (isset($_POST['Description'])) {
-     $fiche = new fiches();
-     $fiche ->addfiche($_POST['Description']);
-    if ($fiche) {
+    if (isset($_POST['Description'])) {
+        $fiche = new fiches();
+        $fiche ->addfiche($_POST['Description']);
+        if ($fiche) {
+            header('Location: index.php');
+        }
+    }
+
+    //ajout categories
+
+    if (isset($_POST['libelle'])) {
+    $category = new Category();
+    //    var_dump($_POST) ;
+    //    die();
+    $category->addcategory($_POST['libelle']);
+        if ($category) {
+            header('Location: index.php');
+        }
+    }
+
+    //selection categories
+
+    $categories = $obj->select('categories', '*', null, "parent_id=0", null, null);
+
+    //update categories
+
+    if (isset($_POST['libelles'])) {
+        $id = $_POST['id'];
+        $libelle = $_POST['libelles'];
+        $obj->update('categories', [
+            "libelle" => $libelle
+        ], "id='$id'");
         header('Location: index.php');
     }
-}
 
-//ajout categories
+    //suppression categories
 
-if (isset($_POST['libelle'])) {
-   $category = new Category();
-//    var_dump($_POST) ;
-//    die();
-   $category->addcategory($_POST['libelle']);
-    if ($category) {
+    if (isset($_GET['delete'])) {
+        $id = $_GET['delete'];
+        $id_categ = $obj->select('categories', 'id', null, "id = '$id' and parent_id=0", null, null);
+        foreach($id_categ as $d){
+            $ids= $d['id']; 
+        }
+        for($i = $ids;$i<1000;$i++){
+            $idd_categ = $obj->select('categories', 'id', null, "parent_id = $i", null, null);
+            foreach($idd_categ as $c){
+                $iiii = $c['id'];
+                $obj->delete('categories', "id = '$iiii'");
+            }
+        }
+        $obj->delete('categories', "id = '$ids'");
         header('Location: index.php');
     }
-}
-
-//selection categories
-
-$categories = $obj->select('categories', '*', null, "parent_id=0", null, null);
-
-//update categories
-
-if (isset($_POST['libelles'])) {
-    $id = $_POST['id'];
-    $libelle = $_POST['libelles'];
-    $obj->update('categories', [
-        "libelle" => $libelle
-    ], "id='$id'");
-    header('Location: index.php');
-}
-
-//suppression categories
-
-if (isset($_GET['delete'])) {
-    $id = $_GET['delete'];
-    $obj->delete('categories', "id = '$id'");
-    header('Location: index.php');
-}
-
-
 ?>
 
 <!DOCTYPE html>
@@ -72,7 +81,7 @@ if (isset($_GET['delete'])) {
                 <div class="form-gourp">
                     <div class="mb-3">
                         <label for="" class="form-label">Nom categorie :</label>
-                        <input type="text" name="libelle" id="" class="form-control" placeholder="" aria-describedby="helpId">
+                        <input type="text" name="libelle" id="" class="form-control" placeholder="" aria-describedby="helpId" required>
                     </div>
                     <button class="btn btn-primary">Ajouter</button>
             </form>
@@ -124,8 +133,8 @@ if (isset($_GET['delete'])) {
                     <form action="index.php" method="post">
                         <div class="mb-3">
                             <label for="" class="form-label">Libelle :</label>
-                            <input type="text" name="libelles" id="nom" class="form-control" placeholder="" aria-describedby="helpId">
-                            <input type="hidden" name="id" id="id" class="form-control" placeholder="" aria-describedby="helpId">
+                            <input type="text" name="libelles" id="nom" class="form-control" placeholder="" aria-describedby="helpId" required>
+                            <input type="hidden" name="id" id="id" class="form-control" placeholder="" aria-describedby="helpId" required>
                         </div>
 
                 </div>
@@ -148,12 +157,12 @@ if (isset($_GET['delete'])) {
                     <form action="index.php" method="post">
                         <div class="mb-3">
                             <label for="libelle" class="form-label">Libelle :</label>
-                            <input type="text" name="labelle" id="labelle" class="form-control" placeholder="" aria-describedby="helpId">
-                            <input type="hidden" name="categorie_id" id="categorie_id" class="form-control" placeholder="" aria-describedby="helpId">
+                            <input type="text" name="labelle" id="labelle" class="form-control" placeholder="" aria-describedby="helpId" required>
+                            <input type="hidden" name="categorie_id" id="categorie_id" class="form-control" placeholder="" aria-describedby="helpId" required>
                         </div>
                         <div class="mb-3">
                             <label for="Description" class="form-label">Description :</label>
-                            <input type="text" name="Description" id="Description" class="form-control" placeholder="" aria-describedby="helpId">
+                            <input type="text" name="Description" id="Description" class="form-control" placeholder="" aria-describedby="helpId" required>
                         </div>
 
                 </div>
@@ -177,7 +186,7 @@ if (isset($_GET['delete'])) {
                         <div class="mb-3">
                             <label for="libelle" class="form-label">Libelle :</label>
                             <input type="text" name="libelle" id="" class="form-control" placeholder="" aria-describedby="helpId">
-                            <input type="hidden" name="parent_id" id="ids" class="form-control" placeholder="" aria-describedby="helpId">
+                            <input type="hidden" name="parent_id" id="ids" class="form-control" placeholder="" aria-describedby="helpId" required>
                         </div>
                 </div>
                 <div class="modal-footer">
