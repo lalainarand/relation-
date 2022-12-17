@@ -3,7 +3,7 @@
 class Database
 {
     private $db_host = "https://testdes191662com:3zYHUlD@wf-shared-001.webo-facto.com/mysql/";
-    private $db_user = "testdes191662com";
+    private $db_user = "testdes191662com@localhost";
     private $db_pass = "FEYAElDe";
     private $db_name = "dbtestdevphplalainas191662com";
     private $result = [];
