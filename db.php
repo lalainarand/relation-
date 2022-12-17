@@ -132,16 +132,16 @@ class Database
         }
     }
 
-    // private function tableExists(string $table): bool
-    // {
-    //     $sql = "SHOW TABLES FROM $this->db_name LIKE '$table'";
-    //     $tableInDb = $this->mysqli->query($sql);
-    //     if ($tableInDb->num_rows == 1) {
-    //         return true;
-    //     }
-    //     $this->result[] = " la table : $table n'existe pas";
-    //     return false;
-    // }
+    private function tableExists(string $table): bool
+    {
+        $sql = "SHOW TABLES FROM $this->db_name LIKE '$table'";
+        $tableInDb = $this->mysqli->query($sql);
+        if ($tableInDb->num_rows == 1) {
+            return true;
+        }
+        $this->result[] = " la table : $table n'existe pas";
+        return false;
+    }
 
     public function getResult()
     {
