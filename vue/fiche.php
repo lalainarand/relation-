@@ -1,5 +1,5 @@
 <?php
-include('../db.php');
+include('../modele/db.php');
 $obj = new Database();
 
 //affichage des listes fiches

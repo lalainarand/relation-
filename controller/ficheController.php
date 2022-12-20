@@ -1,6 +1,6 @@
 <?php 
 include_once('../modele/ajout_fiche.php');
-include_once('../db.php');
+include_once('../modele/db.php');
 $obj = new Database();
 
  //ajout fiches
