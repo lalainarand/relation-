@@ -1,7 +1,7 @@
 <?php
     include_once('db.php');
-    include_once('modele/categorie.php');
-    include_once('modele/ajout_fiche.php');
+    include_once('relation/modele/categorie.php');
+    include_once('relation/modele/ajout_fiche.php');
     $obj = new Database();
     $categories = $obj->select('categories', '*', null, "parent_id=0", null, null);
 ?>
