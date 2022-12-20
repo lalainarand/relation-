@@ -1,5 +1,5 @@
 <?php
-include_once('db.php');
+include_once('../modele/db.php');
 include_once('relation/modele/categorie.php');
 include_once('relation/modele/ajout_fiche.php');
 $obj = new Database();
