@@ -1,71 +1,13 @@
 <?php
-    include('db.php');
-    include('categorie.php');
-    include('ajout_fiche.php');
-
+    include_once('db.php');
+    include_once('modele/categorie.php');
+    include_once('modele/ajout_fiche.php');
     $obj = new Database();
-
-    //ajout fiches
-
-    if (isset($_POST['Description'])) {
-        $fiche = new fiches();
-        $fiche ->addfiche($_POST['Description']);
-        if ($fiche) {
-            header('Location: index.php');
-        }
-    }
-
-    //ajout categories
-
-    if (isset($_POST['libelle'])) {
-    $category = new Category();
- 
-    $category->addcategory($_POST['libelle']);
-        if ($category) {
-            header('Location: index.php');
-        }
-    }
-
-    //selection categories
-
     $categories = $obj->select('categories', '*', null, "parent_id=0", null, null);
-
-    //update categories
-
-    if (isset($_POST['libelles'])) {
-        $id = $_POST['id'];
-        $libelle = $_POST['libelles'];
-        $obj->update('categories', [
-            "libelle" => $libelle
-        ], "id='$id'");
-        header('Location: index.php');
-    }
-
-    //suppression categories
-
-    if (isset($_GET['delete'])) {
-        $id = $_GET['delete'];
-        $id_categ = $obj->select('categories', 'id', null, "id = $id", null, null);
-        foreach($id_categ as $d){
-            $ids= $d['id']; 
-        }
-        for($i = $ids;$i<1000;$i++){
-            $idd_categ = $obj->select('categories', 'id', null, "parent_id = $i", null, null);
-            foreach($idd_categ as $c){
-                $iiii = $c['id'];
-                $obj->delete('categories', "id = '$iiii'");
-                $obj->delete('fiches', "categorie_id = '$iiii'");
-            }
-        }
-        $obj->delete('categories', "id = '$ids'");
-        $obj->delete('fiches', "categorie_id = '$ids'");
-        header('Location: index.php');
-    }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -73,15 +15,14 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Test</title>
 </head>
-
 <body>
     <div class="container">
         <div class="row mt-5">
             <h4>Ajout categorie</h4>
-            <form action="index.php" method="post">
+            <form action="../relation/controller/categorieController.php" method="post">
                 <div class="form-gourp">
                     <div class="mb-3">
-                        <label for="" class="form-label">Nom categorie :</label>
+                        <label for="" class="form-label">Nom de categorie :</label>
                         <input type="text" name="libelle" id="" class="form-control" placeholder="" aria-describedby="helpId" required>
                     </div>
                     <button class="btn btn-primary">Ajouter</button>
@@ -89,8 +30,8 @@
         </div>
     </div>
     <div class="row mt-3">
-        <h4>Vos categorie principales:</h4>
         <?php if ($categories) : ?>
+            <h4 class="mt-5 ">Vos categorie principales:</h4>
             <table class="table table-hover ">
                 <thead>
                     <tr>
@@ -104,13 +45,13 @@
                     <?php foreach ($categories as $categorie) : ?>
                         <tr>
                             <td><?= $categorie['libelle'] ?></td>
-                            <td><a href="liste.php?parent_id=<?= $categorie['id'] ?>" class="btn btn-dark">Voir</a></td>
-                            <td><a href="fiche.php?id=<?= $categorie['id'] ?>" class="btn btn-dark">Voir</a></td>
+                            <td><a href="vue/liste.php?parent_id=<?= $categorie['id'] ?>" class="btn btn-dark">Voir</a></td>
+                            <td><a href="vue/fiche.php?id=<?= $categorie['id'] ?>" class="btn btn-dark">Voir</a></td>
                             <td>
                             <a href="" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#sous_cat" onclick="sous_cat(<?= $categorie['id'] ?>)">ajout s.categorie</a>
                                 <a href="" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#fiche" onclick="fiche(<?= $categorie['id'] ?>)">ajout fiche</a>
                                 <a href="" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalId" onclick="editer('<?= $categorie['libelle'] ?>',<?= $categorie['id'] ?>)">Editer</a>
-                                <a href="index.php?delete=<?= $categorie['id'] ?>" class="btn btn-danger">Suprimmer</a>
+                                <a href="../relation/controller/categorieController.php?delete=<?= $categorie['id'] ?>" class="btn btn-danger">Suprimmer</a>
                             </td>
                         </tr>
                     <?php endforeach ?>
@@ -118,7 +59,7 @@
                 </tbody>
             </table>
         <?php else : ?>
-            <h4>Vous n'avez pas de categorie</h4>
+            <h4 class="text-center text-info">Vous n'avez pas encore de categorie</h4>
         <?php endif ?>
     </div>
     </div>
@@ -131,7 +72,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="index.php" method="post">
+                    <form action="../relation/controller/categorieController.php" method="post">
                         <div class="mb-3">
                             <label for="" class="form-label">Libelle :</label>
                             <input type="text" name="libelles" id="nom" class="form-control" placeholder="" aria-describedby="helpId" required>
@@ -155,7 +96,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="index.php" method="post">
+                    <form action="../relation/controller/ficheController.php" method="post">
                         <div class="mb-3">
                             <label for="libelle" class="form-label">Libelle :</label>
                             <input type="text" name="labelle" id="labelle" class="form-control" placeholder="" aria-describedby="helpId" required>
@@ -183,7 +124,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                <form action="index.php" method="post">
+                <form action="../relation/controller/categorieController.php" method="post">
                         <div class="mb-3">
                             <label for="libelle" class="form-label">Libelle :</label>
                             <input type="text" name="libelle" id="" class="form-control" placeholder="" aria-describedby="helpId">
@@ -199,7 +140,7 @@
         </div>
     </div>
 
-    <!-- Optional: Place to the bottom of scripts -->
+
     <script>
         const myModal = new bootstrap.Modal(document.getElementById('modalId'), options)
 
