@@ -1,6 +1,6 @@
 <?php 
 include_once('../modele/categorie.php');
-include('html/db.php');
+include('../modele/db.php');
 $obj = new Database();
 
 
