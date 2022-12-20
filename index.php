@@ -1,13 +1,14 @@
 <?php
-    include_once('db.php');
-    include_once('relation/modele/categorie.php');
-    include_once('relation/modele/ajout_fiche.php');
-    $obj = new Database();
-    $categories = $obj->select('categories', '*', null, "parent_id=0", null, null);
+include_once('db.php');
+include_once('relation/modele/categorie.php');
+include_once('relation/modele/ajout_fiche.php');
+$obj = new Database();
+$categories = $obj->select('categories', '*', null, "parent_id=0", null, null);
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,6 +16,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css" integrity="sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <title>Test</title>
 </head>
+
 <body>
     <div class="container">
         <div class="row mt-5">
@@ -45,10 +47,10 @@
                     <?php foreach ($categories as $categorie) : ?>
                         <tr>
                             <td><?= $categorie['libelle'] ?></td>
-                            <td><a href="vue/liste.php?parent_id=<?= $categorie['id'] ?>" class="btn btn-dark">Voir</a></td>
-                            <td><a href="vue/fiche.php?id=<?= $categorie['id'] ?>" class="btn btn-dark">Voir</a></td>
+                            <td><a href="relation/vue/liste.php?parent_id=<?= $categorie['id'] ?>" class="btn btn-dark">Voir</a></td>
+                            <td><a href="relation/vue/fiche.php?id=<?= $categorie['id'] ?>" class="btn btn-dark">Voir</a></td>
                             <td>
-                            <a href="" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#sous_cat" onclick="sous_cat(<?= $categorie['id'] ?>)">ajout s.categorie</a>
+                                <a href="" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#sous_cat" onclick="sous_cat(<?= $categorie['id'] ?>)">ajout s.categorie</a>
                                 <a href="" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#fiche" onclick="fiche(<?= $categorie['id'] ?>)">ajout fiche</a>
                                 <a href="" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalId" onclick="editer('<?= $categorie['libelle'] ?>',<?= $categorie['id'] ?>)">Editer</a>
                                 <a href="../relation/controller/categorieController.php?delete=<?= $categorie['id'] ?>" class="btn btn-danger">Suprimmer</a>
@@ -124,7 +126,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                <form action="../relation/controller/categorieController.php" method="post">
+                    <form action="../relation/controller/categorieController.php" method="post">
                         <div class="mb-3">
                             <label for="libelle" class="form-label">Libelle :</label>
                             <input type="text" name="libelle" id="" class="form-control" placeholder="" aria-describedby="helpId">
@@ -153,8 +155,8 @@
             document.getElementById('categorie_id').value = id;
 
         }
-        function sous_cat(id)
-        {
+
+        function sous_cat(id) {
             document.getElementById('ids').value = id;
 
         }
