@@ -3,9 +3,9 @@
 class Database
 {
     private $db_host = "localhost";
-    private $db_user = "testdes191662com";
+    private $db_user = "testdes191686com";
     private $db_pass = "FEYAElDe";
-    private $db_name = "dbtestdevphplalainas191662com";
+    private $db_name = "dbtestdevphplalainas191686com";
     private $result = [];
     private $conn = false;
     private $mysqli = "";
